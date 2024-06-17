@@ -66,7 +66,7 @@ fun MarketProdutoLista() {
 
         }
          Column {
-            Text(text = "Feito ")
+            Text(text = "Feito 222")
          }
 
 
