@@ -28,7 +28,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,9 +40,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.guild_market.R
+import com.example.guild_market.screens.MarketTelaConfigProduto
 import com.example.guild_market.screens.MarketTelaInicial
 import com.example.guild_market.viewmodels.MarketProdutoViewModel
-import kotlinx.coroutines.launch
 
 @Composable
 fun MarketProdutoLista(
@@ -55,7 +54,6 @@ fun MarketProdutoLista(
     val context = LocalContext.current
     //== Variaveis de configuração da navbar
     val selectedIndex = remember { mutableStateOf(0) }
-    val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
     //== efeito para exibir na tela a lista de produtos
     LaunchedEffect(Unit) {
@@ -74,22 +72,23 @@ fun MarketProdutoLista(
                             tint = Color(0xFFF5A822)
                         )
                     },
-                    label = { Text("Home", fontSize = 12.sp, fontWeight = FontWeight.Bold) },
+                    label = {
+                        Text("Home", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Color.White) },
                     selected = selectedIndex.value == 0,
                     onClick = {
                         val intent = Intent(context, MarketTelaInicial::class.java)
                         context.startActivity(intent)
                         selectedIndex.value = 0
-                        coroutineScope.launch {
-                            scaffoldState.snackbarHostState.showSnackbar("Home")
-                        }
+//                        coroutineScope.launch {
+//                            scaffoldState.snackbarHostState.showSnackbar("Home")
+//                        }
                     }
                 )
                 BottomNavigationItem(
                     icon = {
                         Icon(
                             Icons.Filled.Settings,
-                            contentDescription = "Settings",
+                            contentDescription = "Configuração",
                             tint = Color(0xFFF5A822)
                         )
                     },
@@ -97,15 +96,15 @@ fun MarketProdutoLista(
                         Text(
                             "Configuração",
                             fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
                         )
                     },
                     selected = selectedIndex.value == 1,
                     onClick = {
+                        val intent = Intent(context, MarketTelaConfigProduto::class.java)
+                        context.startActivity(intent)
                         selectedIndex.value = 1
-                        coroutineScope.launch {
-                            scaffoldState.snackbarHostState.showSnackbar("Configuração")
-                        }
                     }
                 )
             }

@@ -2,6 +2,7 @@ package com.example.guild_market.viewmodels
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Color
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,7 +10,6 @@ import com.example.guild_market.models.MarketProdutoModel
 import com.example.guild_market.services.IMarketProdutoService
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MarketProdutoViewModel(
@@ -17,8 +17,7 @@ class MarketProdutoViewModel(
     private val _produtoService: IMarketProdutoService
 ) : ViewModel() {
     //== Variavel que contem os dados e podem ser alterados, caso requisitado
-    var itemMock = MutableLiveData<List<MarketProdutoModel>>()
-
+    val itemMock = MutableLiveData<List<MarketProdutoModel>>()
     //== Função que contem o retorno da lista de produtos
     fun sucessMock(model: List<MarketProdutoModel>) {
         itemMock.value = model
@@ -29,20 +28,22 @@ class MarketProdutoViewModel(
             val callback = Callback<List<MarketProdutoModel>>(
                 onSucesso = { model ->
                     sucessMock(model)
-
-                }, falha = {erro ->
-
-                    Snackbar.make((context as Activity).findViewById(android.R.id.content),
-                    erro, Int = Snackbar.ANIMATION_MODE_SLIDE, ).show()
-                   }
+                },
             )
             _produtoService.obterProdutos(context, callback)
         }
     }
 }
 
+//== Função de Snackbar
+fun MarketSnackbar(context: Context, message: String, duration: Int = Snackbar.LENGTH_SHORT) {
+    val snackbar = Snackbar.make((context as Activity).findViewById(android.R.id.content), message, duration)
+    // Altera a cor de fundo da Snackbar
+    snackbar.view.setBackgroundColor(Color.RED)
+    snackbar.show()
+}
+
 //== Classe do callback com o tratamento da falha ou sucesso, que irá apresentar na tela
 data class Callback<D>(
     val onSucesso: (res: D) -> Unit,
-    val falha: (problema: String) -> Unit
 )

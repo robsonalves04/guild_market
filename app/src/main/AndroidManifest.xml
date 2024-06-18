@@ -30,7 +30,15 @@
         </activity>
 
         <activity
-            android:name=".screens.MarketGradeProduto"
+            android:name=".screens.MarketTelaGradeProduto"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Guild_market">
+
+        </activity>
+
+        <activity
+            android:name=".screens.MarketTelaConfigProduto"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Guild_market">

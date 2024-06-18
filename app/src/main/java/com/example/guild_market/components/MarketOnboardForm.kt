@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -21,7 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.guild_market.R
-import com.example.guild_market.screens.MarketGradeProduto
+import com.example.guild_market.screens.MarketTelaGradeProduto
 
 @Composable
 fun MarketOnboardForm() {
@@ -47,13 +48,13 @@ fun MarketOnboardForm() {
             //== Botão de acesso ao aplicativo
             Button(
                 onClick = {
-                    val intent = Intent(context, MarketGradeProduto::class.java)
+                    val intent = Intent(context, MarketTelaGradeProduto::class.java)
                     context.startActivity(intent)
                 },
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = Color(0xFFF5A822)
                 ),
-                modifier = androidx.compose.ui.Modifier.padding(16.dp)
+                modifier = androidx.compose.ui.Modifier.padding(16.dp).fillMaxWidth(0.8f).height(60.dp).align(Alignment.Center)
             ) {
                 Text(text = "Entrar", fontSize = 22.sp)
             }
