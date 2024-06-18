@@ -12,8 +12,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,12 +27,10 @@ import androidx.compose.ui.unit.sp
 fun MarketTextField(
     placeholder: String ?= "",
     tipoText: KeyboardType? = KeyboardType.Text,
+    refValue: MutableState<String>,
+    onValueChange: ((String) -> Unit) ?= { x -> refValue.value = x }
 ) {
-    val refValue = remember { mutableStateOf("") }
     val maxLength: Int = 20
-    val onValueChange: (String) -> Unit = { newValue ->
-        refValue.value = newValue
-    }
 
     Column(Modifier.padding(16.dp)) {
         Box(
@@ -44,29 +41,31 @@ fun MarketTextField(
             contentAlignment = Alignment.Center
         ) {
 
-            BasicTextField(
-                value = refValue.value,
-                onValueChange = { x ->
-                    if (x.length <= maxLength) {
-                        refValue.value = x
-                        onValueChange.invoke(x)
-                    }
-                },
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = tipoText!!,
-                    imeAction = ImeAction.Next,
-                    autoCorrect = true
-                ),
-                textStyle = TextStyle(
-                    textAlign = TextAlign.Left,
-                    fontSize = 22.sp,
-                    color = Color.Black,
-                ),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 10.dp, vertical = 10.dp)
-            )
-            if (refValue.value.isEmpty()) {
+            refValue.value?.let {
+                BasicTextField(
+                    value = it,
+                    onValueChange = { x ->
+                        if (x.length <= maxLength) {
+                            refValue.value = x
+                            onValueChange?.invoke(x)
+                        }
+                    },
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        keyboardType = tipoText!!,
+                        imeAction = ImeAction.Next,
+                        autoCorrect = true
+                    ),
+                    textStyle = TextStyle(
+                        textAlign = TextAlign.Left,
+                        fontSize = 22.sp,
+                        color = Color.Black,
+                    ),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 10.dp, vertical = 10.dp)
+                )
+            }
+            if (refValue.value?.isEmpty() == true) {
                 Text(
                     text = placeholder!!,
                     textAlign = TextAlign.Center,

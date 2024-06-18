@@ -2,8 +2,8 @@ package com.example.guild_market.start
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.guild_market.services.IMarketProdutoService
-import com.example.guild_market.services.MarketProdutoService
+import com.example.guild_market.services.produto_service.IMarketProdutoService
+import com.example.guild_market.services.produto_service.MarketProdutoService
 import com.example.guild_market.viewmodels.MarketProdutoViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

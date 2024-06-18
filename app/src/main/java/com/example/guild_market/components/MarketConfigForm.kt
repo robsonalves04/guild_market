@@ -31,11 +31,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.guild_market.models.MarketProdutoModel
 import com.example.guild_market.screens.MarketTelaGradeProduto
 import com.example.guild_market.screens.MarketTelaInicial
+import com.example.guild_market.viewmodels.MarketProdutoViewModel
 
 @Composable
-fun MarketConfigForm() {
+fun MarketConfigForm(_produtoViewModel: MarketProdutoViewModel) {
     //== Variaveis de configuração da navbar
     val selectedIndex = remember { mutableStateOf(0) }
     val scaffoldState = rememberScaffoldState()
@@ -125,16 +127,18 @@ fun MarketConfigForm() {
                             )
                         }
                     }
-                    MarketTextField(placeholder = "Digite o produto", KeyboardType.Text)
-                    MarketTextField(placeholder = "Digite a descrição", KeyboardType.Text)
-                    MarketTextField(placeholder = "Digite o valor", KeyboardType.Decimal)
+                    MarketTextField(refValue = _produtoViewModel.incluirProduto,
+                        onValueChange = { x ->
+                            _produtoViewModel.incluirProduto.value = x
+                        },placeholder = "Digite o produto", tipoText =  KeyboardType.Text)
+//                    MarketTextField(placeholder = "Digite a descrição", KeyboardType.Text)
+//                    MarketTextField(placeholder = "Digite o valor", KeyboardType.Decimal)
 
                     Box {
                         //== Botão de acesso ao aplicativo
                         Button (
                             onClick = {
-                                val intent = Intent(context, MarketTelaGradeProduto::class.java)
-                                context.startActivity(intent)
+                                _produtoViewModel.adicionarProduto(produtoModel = MarketProdutoModel())
                             },
                             colors = ButtonDefaults.buttonColors(
                                 backgroundColor = Color(0xFFF5A822)

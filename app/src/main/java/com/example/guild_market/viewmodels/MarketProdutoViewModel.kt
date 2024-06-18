@@ -3,11 +3,14 @@ package com.example.guild_market.viewmodels
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.guild_market.mocks.produtosMock
 import com.example.guild_market.models.MarketProdutoModel
-import com.example.guild_market.services.IMarketProdutoService
+import com.example.guild_market.services.produto_service.IMarketProdutoService
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,6 +21,38 @@ class MarketProdutoViewModel(
 ) : ViewModel() {
     //== Variavel que contem os dados e podem ser alterados, caso requisitado
     val itemMock = MutableLiveData<List<MarketProdutoModel>>()
+
+    private val _itemNovo = MutableLiveData<List<MarketProdutoModel>>()
+    val itemNovo: LiveData<List<MarketProdutoModel>> = _itemNovo
+
+    init {
+        _itemNovo.value = produtosMock.toMutableList()
+    }
+
+    fun adicionarProduto(produtoModel: MarketProdutoModel) {
+        val atualLista = _itemNovo.value?.toMutableList() ?: mutableListOf()
+        atualLista.add(produtoModel)
+        _itemNovo.value = atualLista
+    }
+
+
+
+    val incluirProduto = mutableStateOf("")
+//
+//
+//    val itemAtual  = MutableLiveData<MarketProdutoModel>(null)
+//
+//    val itemNovo  = MutableLiveData<List<MarketProdutoModel>>(null)
+//
+//    fun adicionarProduto (produtoModel: MarketProdutoModel){
+//        val listaAtualizada = itemNovo.value.orEmpty()
+//            .toMutableList().apply { add(produtoModel) }
+//        itemNovo.postValue(listaAtualizada)
+//        itemNovo.value = listaAtualizada
+//    }
+
+
+
     //== Função que contem o retorno da lista de produtos
     fun sucessMock(model: List<MarketProdutoModel>) {
         itemMock.value = model
