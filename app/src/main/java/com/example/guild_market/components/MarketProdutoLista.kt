@@ -13,25 +13,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomAppBar
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
@@ -42,7 +33,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -51,27 +41,27 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.guild_market.R
-import com.example.guild_market.models.MarketProdutoModel
-import com.example.guild_market.screens.MarketGradeProduto
 import com.example.guild_market.screens.MarketTelaInicial
 import com.example.guild_market.viewmodels.MarketProdutoViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun MarketProdutoLista(
+    //== trafego de informações pelo viewModel
     _produtoViewModel: MarketProdutoViewModel
 ) {
-
+    //== Variaveis de inicialização e consumo da API
     val itemMock = _produtoViewModel.itemMock.observeAsState()
     val context = LocalContext.current
+    //== Variaveis de configuração da navbar
     val selectedIndex = remember { mutableStateOf(0) }
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
-
+    //== efeito para exibir na tela a lista de produtos
     LaunchedEffect(Unit) {
         _produtoViewModel.produtoMock(context)
     }
-
+    //== NavBar posicionada de maneira fixa no rodapé da pagina.
     Scaffold(
         scaffoldState = scaffoldState,
         bottomBar = {
@@ -120,7 +110,7 @@ fun MarketProdutoLista(
                 )
             }
         },
-        // == Conteudo da pagina
+        // == Conteudo da pagina, acima da NavBar
         content = { paddingValues ->
             Column(
                 modifier = Modifier
@@ -148,62 +138,73 @@ fun MarketProdutoLista(
                         }
                     }
                 }
-
-                itemMock.value.let { it ->
-                    it?.map { it3 ->
-                        val listState = rememberLazyListState()
-                        val chunkedList =  it.chunked(3)
+                //== Mapeamento dos Produtos
+                itemMock.value.let { produtoLista ->
+                    produtoLista?.forEach { produto ->
+                        val chunkedList = produtoLista.chunked(3)
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .fillMaxHeight()
                                 .padding(10.dp),
                         ) {
-                            LazyColumn(state = listState) {
+                            LazyColumn {
                                 val mods = Modifier
                                     .padding(4.dp)
                                     .fillMaxWidth()
-                                itemsIndexed(chunkedList) { index, rowItems ->
-
-                                    Column(modifier = Modifier.fillMaxHeight()) {
-                                        Row(
-                                            modifier = mods,
-                                            horizontalArrangement = Arrangement.SpaceBetween,
-                                            verticalAlignment = Alignment.CenterVertically
-                                        ) {
-                                            rowItems.forEach { item ->
-
-                                                Box(modifier = Modifier.padding(top = 8.dp)) {
-                                                    Column(
-                                                        Modifier
-                                                            .width(100.dp)
-                                                            .height(180.dp)
-                                                            .clip(RoundedCornerShape(12.dp)),
-                                                        horizontalAlignment = Alignment.CenterHorizontally
-                                                    ) {
-                                                        Text(
-                                                            text = it3.titulo!!,
-
-                                                        )
-                                                        Image(
-                                                            painter = painterResource(id = R.drawable.sem_produto),
-                                                            contentDescription =
-                                                            "Imagem carregada da internet",
-                                                            contentScale = ContentScale.Crop,
-                                                            modifier = Modifier
-                                                                .height(100.dp)
+                                chunkedList.forEach { rowItems ->
+                                    item {
+                                        Column(modifier = Modifier.fillMaxHeight()) {
+                                            Row(
+                                                modifier = mods,
+                                                horizontalArrangement = Arrangement.SpaceBetween,
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                rowItems.forEach { item ->
+                                                    //== Secção de Cards de produtos
+                                                    Box(modifier = Modifier.padding(top = 8.dp)) {
+                                                        Column(
+                                                            Modifier
                                                                 .width(100.dp)
-                                                                .clip(RoundedCornerShape(12.dp))
-                                                        )
-                                                        Text(
-                                                            text = it3.descricao!!, textAlign = TextAlign.Center, fontSize = 5.sp
-                                                        )
-                                                        Text(
-                                                            text = it3.valor!!,textAlign = TextAlign.Start, fontSize = 5.sp, fontWeight = FontWeight.SemiBold
-                                                        )
-
+                                                                .height(180.dp)
+                                                                .clip(RoundedCornerShape(12.dp)),
+                                                            horizontalAlignment = Alignment.CenterHorizontally
+                                                        ) {
+                                                            //== Titulo do Produto
+                                                            Text(
+                                                                text = item.titulo!!,
+                                                                modifier = Modifier.padding(bottom = 4.dp)
+                                                            )
+                                                            //== Imagem do Produto
+                                                            Image(
+                                                                painter = painterResource(id = R.drawable.sem_produto),
+                                                                contentDescription =
+                                                                "Imagem carregada da internet",
+                                                                contentScale = ContentScale.Crop,
+                                                                modifier = Modifier
+                                                                    .height(100.dp)
+                                                                    .width(100.dp)
+                                                                    .clip(RoundedCornerShape(12.dp))
+                                                            )
+                                                            //== Descrição do Produto
+                                                            Text(
+                                                                text = item.descricao!!,
+                                                                textAlign = TextAlign.Justify,
+                                                                fontSize = 10.sp,
+                                                                modifier = Modifier.padding(
+                                                                    top = 8.dp,
+                                                                    bottom = 3.dp
+                                                                )
+                                                            )
+                                                            //== Valor do Produto
+                                                            Text(
+                                                                text = item.valor!!,
+                                                                textAlign = TextAlign.Start,
+                                                                fontSize = 12.sp,
+                                                                fontWeight = FontWeight.SemiBold
+                                                            )
+                                                        }
                                                     }
-
                                                 }
                                             }
                                         }
@@ -212,15 +213,8 @@ fun MarketProdutoLista(
                             }
                         }
                     }
-
                 }
             }
         }
     )
 }
-
-
-
-
-
-

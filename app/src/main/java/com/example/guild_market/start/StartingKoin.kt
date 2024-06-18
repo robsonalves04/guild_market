@@ -11,27 +11,25 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 
-
 class Starting : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
-
+        //==Inicialização pelo Koin
         startKoin {
             androidLogger()
             androidContext(this@Starting)
             modules(module {
-
-                single <IMarketProdutoService>{MarketProdutoService()}
-
+                //== Injeção de dependencia do Service
+                single<IMarketProdutoService> { MarketProdutoService() }
+                //==Injeção do ViewModel
                 viewModel { MarketProdutoViewModel(get()) }
-
             })
         }
-
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        //== Rodapé padrão do celular
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
     }
-
+    //== Variavel que faz com que a instacia inicie depois
     companion object {
         lateinit var instance: Starting
             private set
