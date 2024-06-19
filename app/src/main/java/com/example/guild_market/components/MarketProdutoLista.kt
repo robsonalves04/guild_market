@@ -2,6 +2,7 @@ package com.example.guild_market.components
 
 import android.content.Intent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Icon
@@ -31,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -41,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.guild_market.R
 import com.example.guild_market.screens.MarketTelaConfigProduto
+import com.example.guild_market.screens.MarketTelaConsultaCep
 import com.example.guild_market.screens.MarketTelaInicial
 import com.example.guild_market.viewmodels.MarketProdutoViewModel
 
@@ -79,9 +83,6 @@ fun MarketProdutoLista(
                         val intent = Intent(context, MarketTelaInicial::class.java)
                         context.startActivity(intent)
                         selectedIndex.value = 0
-//                        coroutineScope.launch {
-//                            scaffoldState.snackbarHostState.showSnackbar("Home")
-//                        }
                     }
                 )
                 BottomNavigationItem(
@@ -107,6 +108,30 @@ fun MarketProdutoLista(
                         selectedIndex.value = 1
                     }
                 )
+                BottomNavigationItem(
+                    icon = {
+                        Icon(
+                            Icons.Filled.Search,
+                            contentDescription = "Consulta CEP",
+                            tint = Color(0xFFF5A822)
+                        )
+                    },
+                    label = {
+                        Text(
+                            "Consulta CEP",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                    },
+                    selected = selectedIndex.value == 0,
+                    onClick = {
+                        val intent = Intent(context, MarketTelaConsultaCep::class.java)
+                        context.startActivity(intent)
+                        selectedIndex.value = 0
+                    }
+                )
+
             }
         },
         // == Conteudo da pagina, acima da NavBar
@@ -115,6 +140,14 @@ fun MarketProdutoLista(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                Color(0xFF0D5D52).copy(alpha = 0.5f),
+                                Color(0xFF00BFA5).copy(alpha = 0.2f)
+                            )
+                        )
+                    )
             ) {
                 Box {
                     Row(

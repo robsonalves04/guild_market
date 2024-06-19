@@ -44,6 +44,15 @@
             android:theme="@style/Theme.Guild_market">
 
         </activity>
+
+        <activity
+            android:name=".screens.MarketTelaConsultaCep"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Guild_market">
+
+        </activity>
+
     </application>
 
 </manifest>

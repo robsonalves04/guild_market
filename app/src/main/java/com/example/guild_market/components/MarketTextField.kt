@@ -26,16 +26,18 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun MarketTextField(
     placeholder: String ?= "",
+    maxLength: Int = 20,
+    textAlign: TextAlign = TextAlign.Left,
+    widthFloat: Float = 1f,
     tipoText: KeyboardType? = KeyboardType.Text,
     refValue: MutableState<String>,
     onValueChange: ((String) -> Unit) ?= { x -> refValue.value = x }
 ) {
-    val maxLength: Int = 20
 
     Column(Modifier.padding(16.dp)) {
         Box(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(widthFloat)
                 .height(50.dp)
                 .background(Color.LightGray, shape = RoundedCornerShape(8.dp)),
             contentAlignment = Alignment.Center
@@ -56,7 +58,7 @@ fun MarketTextField(
                         autoCorrect = true
                     ),
                     textStyle = TextStyle(
-                        textAlign = TextAlign.Left,
+                        textAlign = textAlign,
                         fontSize = 22.sp,
                         color = Color.Black,
                     ),

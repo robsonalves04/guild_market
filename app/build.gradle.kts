@@ -64,14 +64,15 @@ dependencies {
     implementation ("androidx.activity:activity-compose:1.8.2")
     implementation ("androidx.compose.material:material-icons-extended:1.6.4")
     implementation ("androidx.compose.runtime:runtime-livedata:1.6.4")
-    
     implementation ("io.insert-koin:koin-android:3.5.0")
     implementation ("io.insert-koin:koin-androidx-compose:3.5.0")
     implementation("io.coil-kt:coil-compose:2.4.0")
-
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-moshi:2.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation ("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
+    implementation ("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

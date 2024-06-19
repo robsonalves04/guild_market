@@ -2,6 +2,8 @@ package com.example.guild_market.start
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.guild_market.services.network_service.IMarketNetworkService
+import com.example.guild_market.services.network_service.MarketNetworkService
 import com.example.guild_market.services.produto_service.IMarketProdutoService
 import com.example.guild_market.services.produto_service.MarketProdutoService
 import com.example.guild_market.viewmodels.MarketProdutoViewModel
@@ -22,8 +24,10 @@ class Starting : Application() {
             modules(module {
                 //== Injeção de dependencia do Service
                 single<IMarketProdutoService> { MarketProdutoService() }
+                single<IMarketNetworkService> { MarketNetworkService() }
+
                 //==Injeção do ViewModel
-                viewModel { MarketProdutoViewModel(get()) }
+                viewModel { MarketProdutoViewModel(get(), get()) }
             })
         }
         //== Rodapé padrão do celular
