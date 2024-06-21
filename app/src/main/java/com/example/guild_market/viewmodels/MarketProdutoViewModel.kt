@@ -52,6 +52,7 @@ class MarketProdutoViewModel(
                         context,
                         "CEP inválido. Verifique o número e tente novamente."
                     )
+
                     404 -> toastSnackbar(context, "É preciso digital algum CEP.")
                     else -> toastSnackbar(context, "Erro inesperado: ${e.message}")
                 }
@@ -75,26 +76,27 @@ class MarketProdutoViewModel(
                 toastSnackbar(context, "Erro de conexão. Verifique sua internet.")
             }
         }
-
-        //== Função que contem o retorno da lista de produtos
-        fun sucessMock(model: List<MarketProdutoModel>) {
-            itemMock.value = model
-        }
-
-        //==Função que apresenta sucesso ou falha do retorno da requisição
-        fun produtoMock(context: Context) {
-            viewModelScope.launch(Dispatchers.Main) {
-                val callback = Callback<List<MarketProdutoModel>>(
-                    onSucesso = { model ->
-                        sucessMock(model)
-                    },
-                )
-                _produtoService.obterProdutos(context, callback)
-            }
-        }
     }
 
-    //== Classe do callback com o tratamento da falha ou sucesso, que irá apresentar na tela
-    data class Callback<D>(
-        val onSucesso: (res: D) -> Unit,
-    )
+    //== Função que contem o retorno da lista de produtos
+    fun sucessMock(model: List<MarketProdutoModel>) {
+        itemMock.value = model
+    }
+
+    //==Função que apresenta sucesso ou falha do retorno da requisição
+    fun produtoMock(context: Context) {
+        viewModelScope.launch(Dispatchers.Main) {
+            val callback = Callback<List<MarketProdutoModel>>(
+                onSucesso = { model ->
+                    sucessMock(model)
+                },
+            )
+            _produtoService.obterProdutos(context, callback)
+        }
+    }
+}
+
+//== Classe do callback com o tratamento da falha ou sucesso, que irá apresentar na tela
+data class Callback<D>(
+    val onSucesso: (res: D) -> Unit,
+)
